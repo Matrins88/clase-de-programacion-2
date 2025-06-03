@@ -5,39 +5,11 @@ import cors from 'cors'
 console.log(ENVIRONMENT)
 connectDB();
 
-import Workspace from "./models/Workspace.model.js";
-import User from "./models/User.model.js";
-import userRepository from "./repositories/users.repository.js";
-import workspace_repository from "./repositories/workspace.repository.js";
-import WorkspaceMembers from "./models/WorkspaceMembers.model.js";
-import { AVAILABLE_ROLES_WORKSPACE_MEMBERS } from './dictionaries/availableRoles.dictionary.js';
-import channel from './models/Channel.model.js';
-import ChannelMessage from './models/ChannelMessages.model.js';
-import ChannelMembers from './models/ChannelMembers.model.js';
-import workspaceMembers_repository from './repositories/WorkspaceMembers.repository.js';
-import userController from './controllers/users.controller.js'
 import express from 'express'
 import usersRouter from './routes/users.router.js';
-import product_repository from './repositories/products.repository.js';
 import productsRouter from './routes/product.router.js';
-import productController from './controllers/product.controller.js';
-import transporter from './config/mail.config.js';
 
 
-//console.log('hola mundo');
-
-
-/*userRepository.create({name:'juanxi', password:"juan1234", email:'juan21@gmail.com'
-})
-
- const workspace = new Workspace({
-    name: 'espacio de trabajo 1',
-    description: 'Hola...',
-    owner_id: '6822821a75aa6972bfd02bb8'
-})*/
-
-
-//workspace.save()
 
 
 
@@ -120,26 +92,4 @@ app.post('/depositos', (request, response) => {
  role: AVAILABLE_ROLES_WORKSPACE_MEMBERS.ADMIN})// para probar el enum*/
 
 
- /*const products =[
-    {
-        title: 'Tv samsung',
-        price: 4000,
-        id:1
-    },
-    {   title: 'Tv LG',
-        price: 5000,
-        id:2
-    },
-    {
-        title: 'Tv SONY',
-        price:6000,
-        id:3
-        }
-    ]   
-    app.get('/productos', (request, response)=>{
-        console.log(request.query)
-        let max_price = request.query.max_price//guardar la variable max price
-        let min_price
-        const lista_filtrada = products.filter(products => products.price <= max_price)
-        response.send(lista_filtrada)//enviar la lista filtrada
-    })*/
+ 
