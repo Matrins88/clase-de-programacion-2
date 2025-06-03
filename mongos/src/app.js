@@ -21,13 +21,9 @@ app.use(cors())
 app.use(express.json())//configurar que nuestra api lea json
 
 app.get('/',(request, response)=> {
-    if(true){
-    response.send('<h1>hola soy express</h1>')// solo se puede enviar un consulta por cada get 
-    //sino usando if
-    } else{
-        response.send('<h1>Ups hubo un error</h1>')
+  response.send('<h1>hola soy express</h1>')// solo se puede enviar un consulta por cada get 
     }
-})// funcion orientada a eventos
+)// funcion orientada a eventos
 // cuando reciba un get en esta direccion '/' ejecuta la funcion
 //la callback asociada a  un metodo siempre recibe dosparametros: request y response
 // el parametro request es yb ibjeto que contiene toda la info de la respuesta
