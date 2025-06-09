@@ -10,14 +10,11 @@ const sendVerificationEmail = async ({ email, name, redirect_url }) => {
             from: ENVIRONMENT.GMAIL_USERNAME,                     
             to: email,
             subject: "Verifica tu correo electronico",
-            html: `
-            <h1>Bienvenido ${name}</h1>
+            html: `<h1>Bienvenido ${name}</h1>
             <p>
-                Necesitamos que des click al siguiente link para verificar que esta es tu cuenta, en caso de no reconocer este registro desestima el mail.
-            </p>
+            Necesitamos que des click al siguiente link para verificar que esta es tu cuenta, en caso de no reconocer este registro desestima el mail.</p>
             <a href='${redirect_url}'>Click aqui para verificar</a>  // nos permite verificar la cuenta movernos a la ruta
-            <span>Tienes 7 dias para dar click al link</span>
-            `
+            <span>Tienes 7 dias para dar click al link</span>`
         }
     )
     console.log('Mail enviado:', result)
@@ -121,6 +118,7 @@ class UserController {
     }
 
     async login(request, response){
+        console.log("hola")
         try{
             const {email, password} = request.body
 
@@ -208,7 +206,7 @@ class UserController {
           }
           //Generamos un nuevo token
            const verification_token =jwt.sign ({email:request.body.email}, ENVIRONMENT.JWT_SECRET_KEY)
-            sendVerificationEmail({
+             await sendVerificationEmail({
                 email, 
                 name: user.name, 
                 redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`

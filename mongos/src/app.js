@@ -41,6 +41,9 @@ app.get('/users', userController.getAll)*///hacemos un nueva consulta, distintas
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 
+app.post('/users', usersRouter)
+app.post('/api/products', productsRouter)
+
 
 
 
