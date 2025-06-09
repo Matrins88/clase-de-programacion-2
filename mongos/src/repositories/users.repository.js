@@ -3,15 +3,18 @@ import User from "../models/User.model.js"
 //Interaccion con la base de datos
 class UserRepository {
 
-    async create({name, password, email}){
-        try{
-        const user = new User({name, password, email})
-        await user.save()
-        console.log("Usuario creado exitosamente")
-        } catch (error){
-            console.log("Error")
-        }
-    }
+  async create({ name, password, email }) {
+  try {
+    const user = new User({ name, password, email });
+    const savedUser = await user.save();
+    console.log("✅ Usuario creado exitosamente:", savedUser);
+    return savedUser;
+  } catch (error) {
+    console.error("❌ Error al crear usuario:", error);
+    throw error; 
+  }
+}
+
 
     async getAll(){
         const users = await User.find()

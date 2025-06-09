@@ -24,27 +24,29 @@ const sendVerificationEmail = async ({ email, name, redirect_url }) => {
 class UserController {
 
     async register(request, response) {
+        try{
+            const { name, email, password } = request.body;
 
         /* Validamos que llegen los datos */
         if (!request.body || !request.body.name || !request.body.password || !request.body.email) {
             response.status(400).send({
                 message: 'Registro invalido',
                 ok: false
-            })
+            });
 
         }
 
         //Hashear la contraseña// la contraseña no se puede ver en texto plano.. queda oculta 
         //para que nadie la pueda usar
-        const password_hashed = await bcrypt.hash(request.body.password, 12)
+        const password_hashed = await bcrypt.hash(request.body.password, 12);
 
 
         //Guardar el usuario en la base de datos
-        await userRepository.create({
+        const saveUser = await userRepository.create({
             name: request.body.name,
             password: password_hashed,
             email: request.body.email
-        })
+        });
     /* Emitimos un token con cierta firma */
         const verification_token = jwt.sign({ email: request.body.email }, ENVIRONMENT.JWT_SECRET_KEY)
 
@@ -54,12 +56,16 @@ class UserController {
                 name: request.body.name,
                 redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
             }
-        )
+        );
 
         response.send({
             message: 'Recibido!!, mira que te envie un mail de verificacion',
             ok: true
         })
+    }catch (error){
+        console.error ('error de registro', error);
+        response.status(500).send({message: 'error interno del servidor', ok:false});
+    }
     }
      async getAll(request, response) {
 
@@ -198,7 +204,7 @@ class UserController {
                 message:'usuario no encontrado'
             }
           }
-          if(user.verified){
+          if(user.verified){                           
             throw{
                 status: 400,
                 message: 'el usuario ya esta verificado'
