@@ -1,6 +1,9 @@
 import {ENVIRONMENT} from './environment.js'
 import { connectDB} from'./config/db.config.js'
 import cors from 'cors'
+import jwt from 'jsonwebtoken';
+const { JsonWebTokenError, sign, verify } = jwt;
+
 
 console.log(ENVIRONMENT)
 connectDB();
@@ -8,6 +11,9 @@ connectDB();
 import express from 'express'
 import usersRouter from './routes/users.router.js';
 import productsRouter from './routes/product.router.js';
+import authorizationMiddleware from './middlewares/auth.middleware.js';
+import { request } from 'http';
+
 
 
 
@@ -44,8 +50,44 @@ app.use('/api/users', usersRouter);
 app.post('/users', usersRouter)
 app.post('/api/products', productsRouter)
 
+app.get("/test-tonto",authorizationMiddleware, (request,response)=>{
+  response.send("hola")
+})//consulta para obtener el token
+app.get('/private-info',authorizationMiddleware,(request, response) =>{
+  try{
+    
+  authorization_token
+  response.send("clave importante que solo un USUARIO DEBRERIA PODER ACCEDER")
 
+  }catch (error){
+ 
+      response.status(500).send({
+        ok:false,
+        message: 'ocurrio un error al intentar obtener la informacion',
+        status:500
+      })
+    }
 
+  }
+
+  )
+
+  
+  app.post('/crear-workspace',
+    authorizationMiddleware,
+    (request,response)=>{
+      //quien esta creando el workspace
+      // quien va ser el dueño
+      console.log(request.user) //lo traigo de auth.middleware.CONTENIDO DEL TOKEN
+      console.log('quien quiere crear el workspace es' + request.user.id)
+      response.send ('workspace creado')
+    }
+  )
+
+//Middleware
+//es una funcion que se ejecuta entre medio de un proceso
+//entre la consulta  y la respuesta quiero saber si es un dato o la cnsulta
+// es json
 
 
 app.listen (ENVIRONMENT.PORT,()=>{

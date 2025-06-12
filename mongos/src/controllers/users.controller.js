@@ -24,6 +24,7 @@ const sendVerificationEmail = async ({ email, name, redirect_url }) => {
 class UserController {
 
     async register(request, response) {
+        console.log('hola')
         try{
             const { name, email, password } = request.body;
 
@@ -156,6 +157,7 @@ class UserController {
             const authorization_token = jwt.sign({
                 name: user.name,
                 email: user.email,
+                id: user._id,
                 created_at: user.created_at
             }, 
             ENVIRONMENT.JWT_SECRET_KEY
