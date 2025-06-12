@@ -13,6 +13,8 @@ import usersRouter from './routes/users.router.js';
 import productsRouter from './routes/product.router.js';
 import authorizationMiddleware from './middlewares/auth.middleware.js';
 import { request } from 'http';
+import workspace_router from './routes/workspace.router.js';
+import workspace_controller from './controllers/workspace.controller.js';
 
 
 
@@ -43,9 +45,11 @@ app.get('/users', userController.getAll)*///hacemos un nueva consulta, distintas
 
 //ESTA ES LA FORMA PROLIJA DE HACER CONSULTA
 //PORQUE SI TENEMOS VARIAS CONSULTA Y ORGANIZAMOS EL PROYECTO
-
+app.use ('/api/workspaces', workspace_router)
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
+
+
 
 app.post('/users', usersRouter)
 app.post('/api/products', productsRouter)
@@ -79,7 +83,7 @@ app.get('/private-info',authorizationMiddleware,(request, response) =>{
       //quien esta creando el workspace
       // quien va ser el dueño
       console.log(request.user) //lo traigo de auth.middleware.CONTENIDO DEL TOKEN
-      console.log('quien quiere crear el workspace es' + request.user.id)
+      console.log('quien quiere crear el workspace es ' + request.user.id)
       response.send ('workspace creado')
     }
   )
