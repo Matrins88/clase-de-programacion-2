@@ -1,12 +1,21 @@
+import { AVAILABLE_ROLES_WORKSPACE_MEMBERS } from "../dictionaries/availableRoles.dictionary.js";
+import members_workspace_repository from "../repositories/membersWorkspaceRepository.js.js";
 import workspace_repository from "../repositories/workspaces.repository.js"
 class WorkspaceController{
 
-    async create (request,response){//controlador
+    async create (request,response){//controlador, conectado con memberworkspacerepository, y el 
         try{
             const {name,description}=request.body;
             const {id} = request.user // este id es del usuario que hace la consulta
 
-            await workspace_repository.create ({name,description, owner_id: id});// llama el workspace repository
+            const workspace_created = await workspace_repository.create ({name,description, owner_id: id});// llama el workspace repository
+            
+            await members_workspace_repository.create(
+              {
+              workspace_id: workspace_created._id,
+              user_id: id,
+              role: AVAILABLE_ROLES_WORKSPACE_MEMBERS.ADMIN
+            })
             response.status(201).json(
                 {
                     ok:true,
@@ -50,31 +59,46 @@ class WorkspaceController{
       ok: false
     });
   }
-}
-async deleteWorkspace (request, response) {
+}// controlador para eliminar un id en el workspace
+async delete (request, response) {
     try{
-        const workspace_id = request.params.id;
-        const {id} = request.params;
-        const {id: owner_id} = request.user;
+        const workspace_id = request.params.workspace_id.trim();//busca el workspace
+        const user_id = request.user.id;// busca el id del usuario
+        await workspace_repository.deleteWorkspaceFromOwner(user_id, workspace_id)// elimina el workspace
 
-        await workspace_repository.deleteById(worksapce_id)
-        response.status (200).json({
+        response.status (200).json({// responde
               ok:true,
               message: 'Workspace ah sido eliminado correctamente',
-              status: 201,
+              status: 200,
               data: {}
     })
+  
+      return
 
-
-    }    catch(error){
+    } catch(error){
+      if (error.status){
+        response.status(error.status).send(
+          {
+            message: error.message,
+            status: error.status,
+            ok: false
+          }
+        )
+        return
+      } else{
          console.error('Error al eliminar worksapace:', error);
-      return response.status(500).json({
+     response.status(500).json(
+      {
+      status: 500,
       message: 'Error interno del servidor',
       ok: false
-    });
-  }
     }
+  )
+  }
 }
+}
+}
+    
 
 //instanciar
 const workspace_controller = new WorkspaceController();

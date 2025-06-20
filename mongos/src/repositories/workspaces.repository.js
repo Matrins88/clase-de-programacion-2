@@ -16,15 +16,7 @@ async create ({name, owner_id, description}){
         
     });
     await workspace.save(); // guardar los cambios que se hayan hecho
-    console.log("Workspace creado correctamente");
-    }
-   catch(error){
-    console.error('ocurrio un error');
-    console.error(error);
-     throw error;
-   }
-
-
+    return workspace;
    
 }
 /**
@@ -42,11 +34,15 @@ async create ({name, owner_id, description}){
             throw error;
         }
 }
-    async deleteFromOwner(owner_id, workspace_id) {
-        //eliminamos el workspace solo si el owner id es recibido por parametro
-      Workspace.findOneAndDelete({owner_id,_id: workspace_id})
+    async deleteWorkspaceFromOwner(owner_id, workspace_id) {
+         //eliminamos el workspace solo si el owner id es recibido por parametro
+    const result = await  Workspace.findOneAndDelete({owner_id,_id: workspace_id})// donde el owner_id se iguala a tanto
+                                      // lo que sea que encontremos lo va a borrar
+    if(!result){
+        throw{ status: 404, message: 'workspace no encontrado' }
+    }
 
-}
+    }
 async deleteByIfd (workspace_id) {
     return await Workspace.findOneAndDelete({ _id: workspace_id });
 }

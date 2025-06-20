@@ -3,7 +3,7 @@ import authorizationMiddleware from '../middlewares/auth.middleware.js';
 import workspace_controller from '../controllers/workspace.controller.js';
 
 const workspace_router = express.Router();
-
+//ruta para crear usuario
 workspace_router.post(
     '/',
     authorizationMiddleware,
@@ -15,7 +15,7 @@ workspace_router.get(
   workspace_controller.getAll
 );//ruta para borra un usuario
 workspace_router.delete(
-  '/:id',
+ '/:workspace_id', authorizationMiddleware,
   workspace_controller.delete
 )
 
