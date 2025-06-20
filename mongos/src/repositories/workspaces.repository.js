@@ -17,6 +17,9 @@ async create ({name, owner_id, description}){
     });
     await workspace.save(); // guardar los cambios que se hayan hecho
     return workspace;
+}catch(error){
+    console.error ('erro al crear',error)
+    throw error;
 }
 }
 /**
