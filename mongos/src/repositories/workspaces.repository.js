@@ -17,7 +17,7 @@ async create ({name, owner_id, description}){
     });
     await workspace.save(); // guardar los cambios que se hayan hecho
     return workspace;
-   
+}
 }
 /**
      * Obtiene todos los workspaces de un usuario
