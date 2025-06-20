@@ -1,4 +1,4 @@
-import workspace_repository from "../repositories/workspace.repository.js"
+import workspace_repository from "../repositories/workspaces.repository.js"
 class WorkspaceController{
 
     async create (request,response){//controlador
@@ -51,8 +51,30 @@ class WorkspaceController{
     });
   }
 }
+async deleteWorkspace (request, response) {
+    try{
+        const workspace_id = request.params.id;
+        const {id} = request.params;
+        const {id: owner_id} = request.user;
 
+        await workspace_repository.deleteById(worksapce_id)
+        response.status (200).json({
+              ok:true,
+              message: 'Workspace ah sido eliminado correctamente',
+              status: 201,
+              data: {}
+    })
+
+
+    }    catch(error){
+         console.error('Error al eliminar worksapace:', error);
+      return response.status(500).json({
+      message: 'Error interno del servidor',
+      ok: false
+    });
+  }
     }
+}
 
 //instanciar
 const workspace_controller = new WorkspaceController();

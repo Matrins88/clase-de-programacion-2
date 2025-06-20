@@ -24,6 +24,7 @@ async create ({name, owner_id, description}){
      throw error;
    }
 
+
    
 }
 /**
@@ -41,6 +42,15 @@ async create ({name, owner_id, description}){
             throw error;
         }
 }
+    async deleteFromOwner(owner_id, workspace_id) {
+        //eliminamos el workspace solo si el owner id es recibido por parametro
+      Workspace.findOneAndDelete({owner_id,_id: workspace_id})
+
 }
+async deleteByIfd (workspace_id) {
+    return await Workspace.findOneAndDelete({ _id: workspace_id });
+}
+}
+
 const workspace_repository = new WorkspaceRepository();
-export default workspace_repository;
+export default workspace_repository

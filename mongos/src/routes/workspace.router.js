@@ -8,12 +8,15 @@ workspace_router.post(
     '/',
     authorizationMiddleware,
     workspace_controller.create
-)
+)//ruta para ver la lista del usuario
 workspace_router.get(
   '/',
   authorizationMiddleware,
   workspace_controller.getAll
-);
-
+);//ruta para borra un usuario
+workspace_router.delete(
+  '/:id',
+  workspace_controller.delete
+)
 
 export default workspace_router;
