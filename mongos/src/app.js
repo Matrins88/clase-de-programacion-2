@@ -12,9 +12,8 @@ import express from 'express'
 import usersRouter from './routes/users.router.js';
 import productsRouter from './routes/product.router.js';
 import authorizationMiddleware from './middlewares/auth.middleware.js';
-import { request } from 'http';
 import workspace_router from './routes/workspace.router.js';
-import workspace_controller from './controllers/workspace.controller.js';
+import membersWorkspaceRouter from './routes/membersWorkspace.Router.js';
 
 
 
@@ -48,6 +47,7 @@ app.get('/users', userController.getAll)*///hacemos un nueva consulta, distintas
 app.use ('/api/workspaces', workspace_router)
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
+app.use ('/api/members', membersWorkspaceRouter);
 
 
 

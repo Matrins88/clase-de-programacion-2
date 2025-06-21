@@ -46,8 +46,11 @@ async create ({name, owner_id, description}){
     }
 
     }
-async deleteByIfd (workspace_id) {
+async deleteById (workspace_id) {
     return await Workspace.findOneAndDelete({ _id: workspace_id });
+}
+async getById (workspace_id){
+    return await Workspace.findById (workspace_id)
 }
 }
 

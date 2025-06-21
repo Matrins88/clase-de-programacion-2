@@ -1,5 +1,5 @@
 import { AVAILABLE_ROLES_WORKSPACE_MEMBERS } from "../dictionaries/availableRoles.dictionary.js";
-import members_workspace_repository from "../repositories/membersWorkspaceRepository.js.js";
+import members_workspace_repository from "../repositories/membersWorkspaceRepository.js";
 import workspace_repository from "../repositories/workspaces.repository.js"
 class WorkspaceController{
 
