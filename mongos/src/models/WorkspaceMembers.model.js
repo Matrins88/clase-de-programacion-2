@@ -5,13 +5,13 @@ const workspaceMembersSchema = new mongoose.Schema(
     {
     workspace_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Workspace',
+        ref: 'Workspaces',
         required:true
 
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'Users',
         required: true    
         },
     role:{

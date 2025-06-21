@@ -19,7 +19,23 @@ async getAllByWorkspaceId (workspace_id){// creo un metodo para buscar los miemb
    return await WorkspaceMembers.find ({workspace_id: workspace_id})
 }
 async getAllByUserId (user_id){// creo
-    return await WorkspaceMembers.find ({user_id: user_id})
+   const workspaces_list =  await WorkspaceMembers
+   .find ({user_id: user_id}).populate('workspace_id', 'name')
+    //populate expande os datos referenciados de la propiedad workspace_id
+
+    //map es un metodo de arrays que nos permite transformar un array a otro array
+    //el array resultante tiene la misma longitud que el array original
+
+    //limpiamos la lista que devuelve del workspace y donde pertenece
+    const workspaces_list_formated = workspaces_list.map((workspace_member) =>{
+       return {
+        _id: workspace_member._id,
+        workspace: workspace_member.workspace_id,
+        role: workspace_member.role
+       }
+    })
+    return workspaces_list_formated
+
 }
 }
 const members_workspace_repository= new MembersWorkspaceRepository();
