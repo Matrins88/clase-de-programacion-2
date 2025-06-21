@@ -18,6 +18,9 @@ class MembersWorkspaceRepository {
 async getAllByWorkspaceId (workspace_id){// creo un metodo para buscar los miembros
    return await WorkspaceMembers.find ({workspace_id: workspace_id})
 }
+async getAllByUserId (user_id){// creo
+    return await WorkspaceMembers.find ({user_id: user_id})
+}
 }
 const members_workspace_repository= new MembersWorkspaceRepository();
 export default members_workspace_repository;

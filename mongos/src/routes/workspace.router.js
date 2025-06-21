@@ -12,7 +12,7 @@ workspace_router.post(
 workspace_router.get(
   '/',
   authorizationMiddleware,
-  workspace_controller.getAll
+  workspace_controller.getAllByMember,
 );//ruta para borra un usuario
 workspace_router.delete(
  '/:workspace_id', authorizationMiddleware,

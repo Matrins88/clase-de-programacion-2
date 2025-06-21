@@ -40,17 +40,17 @@ class WorkspaceController{
             }
         }
         }
-     async getAll(request, response) {
+     async getAllByMember (request, response) {
          try {
           const { id } = request.user;
 
-           const workspaces = await workspace_repository.getAllByUserId(id);
+           const workspaces = await members_workspace_repository.getAllByUserId(id);
 
-      return response.status(200).json({
+      return response.json({
       ok: true,
       message: 'Lista de workspaces obtenida exitosamente',
       status: 200,
-      data: workspaces
+      data: {workspaces: workspaces}
     });
   } catch (error) {
     console.error('Error al obtener workspaces:', error);
@@ -59,7 +59,9 @@ class WorkspaceController{
       ok: false
     });
   }
-}// controlador para eliminar un id en el workspace
+}
+
+// controlador para eliminar un id en el workspace
 async delete (request, response) {
     try{
         const workspace_id = request.params.workspace_id.trim();//busca el workspace
