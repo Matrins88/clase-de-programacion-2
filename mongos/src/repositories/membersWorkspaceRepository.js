@@ -37,6 +37,9 @@ async getAllByUserId (user_id){// creo
     return workspaces_list_formated
 
 }
+ async getMemberByWorkspaceIdAndUserId (workspace_id, user_id) {
+        return await WorkspaceMembers.findOne({workspace_id: workspace_id, user_id: user_id})
+}
 }
 const members_workspace_repository= new MembersWorkspaceRepository();
 export default members_workspace_repository;

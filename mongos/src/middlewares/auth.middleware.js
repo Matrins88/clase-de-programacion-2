@@ -5,7 +5,7 @@ import { ENVIRONMENT } from '../environment.js'
 const authorizationMiddleware = (request, response, next) =>{
   try{
   const authorization_header = request.headers['authorization']//obtengo verificacion header
-  
+   const authorization_type = authorization_header.split(' ')[0]
   const authorization_token = authorization_header.split(' ')[1]//obtengo autorizacion token
   console.log(authorization_token)
 

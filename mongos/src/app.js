@@ -14,7 +14,9 @@ import productsRouter from './routes/product.router.js';
 import authorizationMiddleware from './middlewares/auth.middleware.js';
 import workspace_router from './routes/workspace.router.js';
 import membersWorkspaceRouter from './routes/membersWorkspace.Router.js';
-
+import channelRouter from './routes/channels.router.js';
+import messageRouter from './routes/messages.router.js';
+import channelMembersRoutes from './routes/channelMembers.router.js'
 
 
 
@@ -48,6 +50,10 @@ app.use ('/api/workspaces', workspace_router)
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use ('/api/members', membersWorkspaceRouter);
+app.use('/api/channels', channelRouter)
+app.use('/api/messages', messageRouter)
+app.use('/api/channel-members', channelMembersRoutes);
+
 
 
 
@@ -77,7 +83,7 @@ app.get('/private-info',authorizationMiddleware,(request, response) =>{
   )
 
   
-  app.post('/crear-workspace',
+ /* app.post('/crear-workspace',
     authorizationMiddleware,
     (request,response)=>{
       //quien esta creando el workspace
@@ -86,7 +92,7 @@ app.get('/private-info',authorizationMiddleware,(request, response) =>{
       console.log('quien quiere crear el workspace es ' + request.user.id)
       response.send ('workspace creado')
     }
-  )
+  )*/
 
 //Middleware
 //es una funcion que se ejecuta entre medio de un proceso
@@ -121,16 +127,16 @@ enviarMailTest();*/
 
 
 
-let baseDatosRota = true
+/*let baseDatosRota = true
 
 app.post('/depositos', (request, response) => {
     console.log('Me llego esta consulta:', request.body)
     if(baseDatosRota ){
         response.status(500).send('La base de datos exploto!!')
     }
-    /* esta respuesta tendra status HTTP 200, porque no especifique otra cosa */
+    // esta respuesta tendra status HTTP 200, porque no especifique otra cosa 
     response.status(201).send("Listo, no te la devuelvo mas!")
-})
+})*/
 /*WorkspaceMembers.create(
  {user_id:'6822821a75aa6972bfd02bb8', 
  workspace_id:'682293e125cde4d284732ad4', 

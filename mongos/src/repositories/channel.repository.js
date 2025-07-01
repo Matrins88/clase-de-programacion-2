@@ -14,6 +14,23 @@ class ChannelRepository {
             throw error;
         }
     }
+    async findByName(workspaceId, name){
+        try{
+            const channel = await Channel.findOne({workspace_id: workspaceId, name});
+            return channel;
+        }catch(error){
+            throw error;
+        }
+    }
+    async findById(channelId){
+        try{
+            const channel = await Channel.findById(channelId);
+            return channel;
+        }catch(error){
+            throw error;
+        }
+    }
+
     async getAllByWorkspace(workspaceId){
         try{
             const channels = await Channel.find({workspace_id: workspaceId});

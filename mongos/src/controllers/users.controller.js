@@ -7,48 +7,47 @@ import jwt from 'jsonwebtoken'
 const sendVerificationEmail = async ({ email, name, redirect_url }) => {
     const result = await transporter.sendMail(
         {
-            from: ENVIRONMENT.GMAIL_USERNAME,                     
+            from: ENVIRONMENT.GMAIL_USERNAME,
             to: email,
             subject: "Verifica tu correo electronico",
-            html: `<h1>Bienvenido ${name}</h1>
+            html: `
+            <h1>Bienvenido ${name}</h1>
             <p>
-            Necesitamos que des click al siguiente link para verificar que esta es tu cuenta, en caso de no reconocer este registro desestima el mail.</p>
-            <a href='${redirect_url}'>Click aqui para verificar</a>  // nos permite verificar la cuenta movernos a la ruta
-            <span>Tienes 7 dias para dar click al link</span>`
+                Necesitamos que des click al siguiente link para verificar que esta es tu cuenta, en caso de no reconocer este registro desestima el mail.
+            </p>
+            <a href='${redirect_url}'>Click aqui para verificar</a>
+            <span>Tienes 7 dias para dar click al link</span>
+            `
         }
     )
     console.log('Mail enviado:', result)
 }
 
-//recibir datos de consulta y emitir respuesta
+//Recibir datos de consulta y emitir respuestas
 class UserController {
-
     async register(request, response) {
-        console.log('hola')
-        try{
-            const { name, email, password } = request.body;
 
         /* Validamos que llegen los datos */
         if (!request.body || !request.body.name || !request.body.password || !request.body.email) {
             response.status(400).send({
                 message: 'Registro invalido',
                 ok: false
-            });
+            })
 
         }
 
-        //Hashear la contraseña// la contraseña no se puede ver en texto plano.. queda oculta 
-        //para que nadie la pueda usar
-        const password_hashed = await bcrypt.hash(request.body.password, 12);
+        //Hashear la contraseña
+        const password_hashed = await bcrypt.hash(request.body.password, 12)
 
 
         //Guardar el usuario en la base de datos
-        const saveUser = await userRepository.create({
+        await userRepository.create({
             name: request.body.name,
             password: password_hashed,
             email: request.body.email
-        });
-    /* Emitimos un token con cierta firma */
+        })
+
+        /* Emitimos un token con cierta firma */
         const verification_token = jwt.sign({ email: request.body.email }, ENVIRONMENT.JWT_SECRET_KEY)
 
         await sendVerificationEmail(
@@ -57,18 +56,14 @@ class UserController {
                 name: request.body.name,
                 redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
             }
-        );
+        )
 
         response.send({
             message: 'Recibido!!, mira que te envie un mail de verificacion',
             ok: true
         })
-    }catch (error){
-        console.error ('error de registro', error);
-        response.status(500).send({message: 'error interno del servidor', ok:false});
     }
-    }
-     async getAll(request, response) {
+    async getAll(request, response) {
 
     }
 
@@ -90,8 +85,7 @@ class UserController {
                 return
             }
             //Verify intententara ver si la firma es correcta, en caso de no ser correcta emitira (throw) un error
-           const contenido = jwt.verify(verification_token, ENVIRONMENT.JWT_SECRET_KEY)
-
+            const contenido = jwt.verify(verification_token, "clave_super_secreta123_nadie_la_conoce")
 
             console.log({ contenido })
             //Segundo, buscar al usuario por el mail en la DB
@@ -100,6 +94,7 @@ class UserController {
             await userRepository.verifyUserEmail({email: contenido.email})
 
             response.send({
+                status: 200,
                 ok: true,
                 message: 'Usuario validado con exito'
             })
@@ -125,8 +120,8 @@ class UserController {
     }
 
     async login(request, response){
-        console.log("hola")
         try{
+        
             const {email, password} = request.body
 
             if(!email){
@@ -163,7 +158,7 @@ class UserController {
             ENVIRONMENT.JWT_SECRET_KEY
             )
             //PASO 4: Responder con el token
-            response.send({
+            response.status(200).send({
                 ok: true,
                 status: 200,
                 message: 'Usuario logueado',
@@ -180,7 +175,7 @@ class UserController {
                         message: error.message, 
                         ok: false
                     }
-                      )
+                )
                 return 
             }
             else{
@@ -189,59 +184,64 @@ class UserController {
             }
         }
     }
-    //TAREA
-    // GET /api/users/resendmail-verification-mail
-    //body:{email}
-    // Debe re-enviar el mail de verificacion
+    // GET /api/users/resend-verification-mail
+    // body: {email}
+    // Debe re-enviar el mail de verificacion si no esta verificado
+
     async resendVerificationEmail (request, response){
         try{
             const {email} = request.body
 
-            //Busacamos eb ka DB el usuario email
-          const user =  await userRepository.findByEmail({email})
-          //checkeamos que exista
-          if(!user){
-            throw{
-                status: 404,
-                message:'usuario no encontrado'
+            //Buscamos en la DB al usuario por mail
+            const user = await userRepository.findByEmail({email})
+            //Checkeamos que exista
+            if(!user){
+                throw {
+                    status: 404,
+                    message: 'Usuario no encontrado'
+                }
             }
-          }
-          if(user.verified){                           
-            throw{
-                status: 400,
-                message: 'el usuario ya esta verificado'
+
+            if(user.verified){
+                throw {
+                    status: 400,
+                    message: 'El usuario ya esta verificado'
+                }
             }
-          }
-          //Generamos un nuevo token
-           const verification_token =jwt.sign ({email:request.body.email}, ENVIRONMENT.JWT_SECRET_KEY)
-             await sendVerificationEmail({
+            //Creamos un token de verificacion para generar la URL de verificacion
+            const verification_token = jwt.sign({ email: email }, ENVIRONMENT.JWT_SECRET_KEY)
+            await sendVerificationEmail({
                 email, 
                 name: user.name, 
-                redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
+                redirect_url:  `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
             })
-            // enviamos un mail, respondemos con un codigo exitoso
+
+            //Si todo sale bien respondemos con codigo exitoso
             response.send({
                 ok: true,
-                message: 'Mail enviado con exito',
-                status:200
+                message: 'Mail reenviado con exito',
+                status: 200
             })
             return
         }
         catch(error){
-            if(error.status){
+            
+            if(error.status){ 
                 response.status(error.status).send(
                     {
-                    message: error.message,
-                    ok: false
+                        message: error.message, 
+                        ok: false
                     }
                 )
-                return
-            }else{
-               console.log('hubo un error', error)
-               response.status(500).send({message: 'Error interno del servidor', ok: false})
+                return 
+            }
+            else{
+                console.log('Hubo un error', error)
+                response.status(500).send({message: 'Error interno del servidor', ok: false})
             }
         }
     }
+
 }
 
 const userController = new UserController()

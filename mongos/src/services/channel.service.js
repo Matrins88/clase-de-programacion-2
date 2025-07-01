@@ -1,47 +1,49 @@
+
 import channel_repository from "../repositories/channel.repository.js";
-import workspaces_repository from "../repositories/workspaces.repository.js";
+
 
 class ChannelService {
-/*************  ✨ Windsurf Command ⭐  *************/
     /**
-     * Crea un nuevo canal en un workspace
-     * @param {string} workspaceId - ID del workspace
-     * @param {string} name - Nombre del canal
-     * @param {boolean} isPrivate - Indica si el canal es privado o no
-     * @returns {Promise<Object>} Un objeto con una propiedad channels_list que contiene la lista de canales del workspace
-     * @throws {Error} Si el nombre del canal tiene mas de 12 caracteres o si el canal ya existe
-     * @throws {Error} Si el workspace no existe
-     */
-/*******  ac0544d3-1b31-4f1d-a6cb-a8e5fdefe259  *******/
-    async create (workspaceId, name, isPrivate) {
-        try{
-            if (typeof name !== 'string'|| name.length >=12) {
+     * Crea un nuevo canal en el workspace especificado.
+     * 
+     * @param {string} workspaceId - El id del workspace donde se creará el canal.
+     * @param {string} name - El nombre del canal a crear.
+     * @return {Object.channels} - Un objeto que contiene la lista actualizada de canales en el workspace.
 
-                throw { 
-                    status: 400,
-                     message: 'El nombre debe tener menos de 12 caracteres' }
+     * 
+     * @throws {Object} - Si el nombre del canal ya existe o no cumple con las validaciones.
+     * @throws {Object.status} {number} - El código de estado de la respuesta (400).
+     * @throws {Object.message} {string} - El mensaje de error.
+     * 
+     * @throws {Object} - Si el workspace no existe.
+     * @throws {Object.status} {number} - El código de estado de la respuesta (404).
+     * @throws {Object.message} {string} - El mensaje de error.
+     */
+    async create(workspaceId, name) {
+        try {
+            if (typeof name !== 'string' || name.length >= 12) {
+                throw { status: 400, message: 'El nombre del canal debe ser un string con menos de 12 caracteres' };
             }
-            //verificar si el canal ya existe
+
+            // Verificar si el canal ya existe
             const existingChannel = await channel_repository.findByName(workspaceId, name);
-            if(existingChannel){
-                throw {
-                    status: 400,
-                    message: 'El canal ya existe'
-                }
+            if (existingChannel) {
+                throw { status: 400, message: 'El nombre del canal ya está en uso' };
             }
-        
-        const workspace = await workspaces_repository.getById(workspaceId);
-        if (!workspace) {
-            throw { 
-                status: 404,
-                 message: 'Workspace no encontrado' }
+            const default_is_private = false
+            await channel_repository.create(workspaceId, name, default_is_private);
+            const channels = await channel_repository.getAllByWorkspace(workspaceId);
+            return {
+                channels
+            };
+        } catch (error) {
+            throw error;
         }
-        const channel = await channel_repository.create(workspaceId, name);
-        const channels_list  = await channel_repository.getAllByWorkspace(workspaceId);
-        return {channels_list};
-    }catch (error){
-        throw error;
+    }
+    async getAllByWorkspaceId (workspace_id){
+        return await channel_repository.getAllByWorkspace(workspace_id)
     }
 }
-}
-export default ChannelService
+
+const channel_service = new ChannelService();
+export default channel_service;

@@ -10,6 +10,11 @@ const channelMessagesSchema = new mongoose.Schema(
             ref: 'MemberChannel',
             required: true
         },
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Users', // este debe ser el nombre de tu modelo de usuario
+            required: true
+        },
         channel_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Channel',
