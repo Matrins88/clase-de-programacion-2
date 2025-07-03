@@ -1,6 +1,6 @@
 
 import channel_repository from "../repositories/channel.repository.js";
-import channel_members_repository from "../repositories/channelMembers.repository.js";
+import channel_members_repository from "../repositories/channelMembers.repository.js"
 
 
 class ChannelService {
