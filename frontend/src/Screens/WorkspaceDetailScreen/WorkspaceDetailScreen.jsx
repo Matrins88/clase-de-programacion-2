@@ -3,10 +3,9 @@ import { createChannel, getChannels } from '../../services/channelService'
 import { Navigate, useParams } from 'react-router-dom'
 import SidebarChannels from '../../Components/SidebarChannels/SidebarChannels'
 import useCustomQuery from '../../hooks/useCustomQuery'
-import Chat from '../../Components/Chat/Chat'
 import useForm from '../../hooks/useForm'
 import './WorkspaceDetailScreen.css'
-
+import Chat from '../../Components/Chat/chat'
 const WorkspaceDetailScreen = () => {
   const auth_user = JSON.parse(localStorage.getItem("AUTH_USER"))
   const auth_token = localStorage.getItem("AUTHORIZATION_TOKEN")
@@ -109,7 +108,7 @@ const WorkspaceDetailScreen = () => {
                 onSubmitCreateChannel={handleSubmit}
                 form_create_channel={form_state}
                 onChangeCreateChannel={handleChange}
-                onAddMemberToChannel={handleAddMemberToChannel} // ✅ NUEVO
+                onAddMemberToChannel={handleAddMemberToChannel} // 
               />
             )
           }
