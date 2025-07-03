@@ -5,7 +5,9 @@ class ChannelController {
         try {
             const { workspace_id } = request.params
             const { name } = request.body
-            const { channels } = await channel_service.create(workspace_id, name)
+            const user_id = request.user.id;
+            const { channels } = await channel_service.create(workspace_id, name, user_id)
+
             response
                 .status(201)
                 .json(

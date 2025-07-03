@@ -2,25 +2,25 @@
 import React, { useEffect, useState } from 'react'
 import './LoginScreen.css'
 import LOCALSTORAGE_KEYS from '../../constants/localstorage'
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { login } from '../../services/authService'
 import useForm from '../../hooks/useForm'
 import { LOGIN_FIELD_NAMES } from '../../constants/form/login'
 
 
 const LoginScreen = () => {
-   const [error, setError] = useState(null)// capturo los error en un estado
-  const [loading, setLoading] = useState(false)// estado para saber si estoy cargando o no
+    const [error, setError] = useState(null)// capturo los error en un estado
+    const [loading, setLoading] = useState(false)// estado para saber si estoy cargando o no
     // capturo los valores de mi formulario y los envio a mi api
 
-  const navigate = useNavigate()// sirve para navegar entre rutas
+    const navigate = useNavigate()// sirve para navegar entre rutas
     // esta funcion es la accion que se ejecutara cuando envie el formulario
-    const onSubmit = async()=>{
-       try{
-  
-       setLoading(true)
-       const server_response_data = await login({ //los envio a la API
-         email: form_state[LOGIN_FIELD_NAMES.EMAIL],
+    const onSubmit = async () => {
+        try {
+
+            setLoading(true)
+            const server_response_data = await login({ //los envio a la API
+                email: form_state[LOGIN_FIELD_NAMES.EMAIL],
                 password: form_state[LOGIN_FIELD_NAMES.PASSWORD]
             })
             if (server_response_data.ok) {
@@ -28,6 +28,11 @@ const LoginScreen = () => {
                     LOCALSTORAGE_KEYS.AUTHORIZATION_TOKEN,
                     server_response_data.data.authorization_token
                 )
+                  localStorage.setItem(
+                    LOCALSTORAGE_KEYS.AUTH_USER,
+                    JSON.stringify(server_response_data.data.user)
+            )
+
                 navigate('/home')
             }
             else {
@@ -37,24 +42,24 @@ const LoginScreen = () => {
         catch (error) {
             setError('Ocurrio un error al comunicarnos con el servidor (intentalo mas tarde)')
         }
-        finally{
+        finally {
             setLoading(false)
         }
     }
     const { form_state, handleChange, handleSubmit } = useForm({
-        onSubmit, 
-        initial_form_state: { 
-            [LOGIN_FIELD_NAMES.EMAIL]: '', 
-            [LOGIN_FIELD_NAMES.PASSWORD]: '' 
+        onSubmit,
+        initial_form_state: {
+            [LOGIN_FIELD_NAMES.EMAIL]: '',
+            [LOGIN_FIELD_NAMES.PASSWORD]: ''
         }
     })
 
 
     return (
         <div className="login-container">
-            
-          <form className="login-card" onSubmit={handleSubmit}>
-              <h1 className="login-title">Login</h1>
+
+            <form className="login-card" onSubmit={handleSubmit}>
+                <h1 className="login-title">Login</h1>
                 <div>
 
                     <label htmlFor='email'>Ingresa tu mail:</label>
@@ -84,6 +89,17 @@ const LoginScreen = () => {
                         ? <button type='button' disabled={loading}>Cargando</button>
                         : <button type='submit' >Iniciar sesion</button>
                 }
+                <div style={{ marginTop: '1rem' }}>
+                    <p>¿No tenés cuenta?</p>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/register')}
+                        className="register-button"
+                    >
+                        Registrate
+                    </button>
+                </div>
+
 
             </form>
         </div>

@@ -47,3 +47,24 @@ export const createWorkspace = async (workspace) => {
         throw error
     }
 }
+export const getWorkspaceById = async ({ workspace_id }) => {//obtiene un workspace
+  try {
+    const auth_token = localStorage.getItem(LOCALSTORAGE_KEYS.AUTHORIZATION_TOKEN)
+    const response = await fetch(`${ENVIRONMENT.URL_API}/api/workspaces/${workspace_id}`, {
+      method: methods_HTTP.GET,
+      headers: {
+        'Authorization': `Bearer ${auth_token}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error("Error al obtener el workspace")
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}

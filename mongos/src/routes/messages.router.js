@@ -11,14 +11,16 @@ messageRouter.use(authorizationMiddleware)
 
 
 messageRouter.post(
-    '/:workspace_id/:channel_id', 
+    '/:workspace_id/:channel_id',
+    authorizationMiddleware,  // 
     workspaceMiddleware,
     channelMiddleware,
     messages_controller.create
 )
 
 messageRouter.get(
-    '/:workspace_id/:channel_id', 
+    '/:workspace_id/:channel_id',
+    authorizationMiddleware,  
     workspaceMiddleware,
     channelMiddleware,
     messages_controller.getAllByChannel

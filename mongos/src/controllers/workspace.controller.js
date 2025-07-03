@@ -100,6 +100,34 @@ class WorkspaceController {
       }
     }
   }
+  // Obtener un workspace por ID
+  async getById(request, response) {
+    try {
+      const { workspace_id } = request.params;
+      const workspace = await workspace_repository.getById(workspace_id);
+
+      if (!workspace) {
+        return response.status(404).json({
+          ok: false,
+          message: 'Workspace no encontrado'
+        });
+      }
+
+      return response.status(200).json({
+        ok: true,
+        message: 'Workspace obtenido exitosamente',
+        data: workspace
+      });
+
+    } catch (error) {
+      console.error("Error al obtener workspace:", error);
+      return response.status(500).json({
+        ok: false,
+        message: 'Error interno del servidor'
+      });
+    }
+  }
+
 }
 
 

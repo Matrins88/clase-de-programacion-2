@@ -32,6 +32,7 @@ const NewWorkspaceScreen = () => {
 
     return (
           <div className="new-workspace-screen">
+            
            
             {
                 loading

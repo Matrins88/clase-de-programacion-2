@@ -1,5 +1,6 @@
 
 import channel_repository from "../repositories/channel.repository.js";
+import channel_members_repository from "../repositories/channelMembers.repository.js";
 
 
 class ChannelService {
@@ -19,19 +20,26 @@ class ChannelService {
      * @throws {Object.status} {number} - El código de estado de la respuesta (404).
      * @throws {Object.message} {string} - El mensaje de error.
      */
-    async create(workspaceId, name) {
+    async create(workspaceId, name, user_id) {
         try {
             if (typeof name !== 'string' || name.length >= 12) {
                 throw { status: 400, message: 'El nombre del canal debe ser un string con menos de 12 caracteres' };
             }
 
-            // Verificar si el canal ya existe
             const existingChannel = await channel_repository.findByName(workspaceId, name);
             if (existingChannel) {
                 throw { status: 400, message: 'El nombre del canal ya está en uso' };
             }
-            const default_is_private = false
-            await channel_repository.create(workspaceId, name, default_is_private);
+
+            const default_is_private = false;
+            const channel = await channel_repository.create(workspaceId, name, default_is_private);
+
+            // 👇 Agregar al usuario como miembro del canal
+            await channel_members_repository.create({
+                member_id: user_id,
+                channel_id: channel._id
+            });
+
             const channels = await channel_repository.getAllByWorkspace(workspaceId);
             return {
                 channels
@@ -40,7 +48,7 @@ class ChannelService {
             throw error;
         }
     }
-    async getAllByWorkspaceId (workspace_id){
+    async getAllByWorkspaceId(workspace_id) {
         return await channel_repository.getAllByWorkspace(workspace_id)
     }
 }

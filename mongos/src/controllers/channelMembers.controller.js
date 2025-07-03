@@ -1,36 +1,25 @@
-import channel_members_service from "../services/channelMembers.service.js";
+import channel_members_service from "../services/channelMembers.service.js"
 
 class ChannelMembersController {
-    async add(request, response) {
+    async addMember(request, response) {
         try {
-            const { member_id } = request.body;
             const { channel_id } = request.params;
+            const { email } = request.body;
 
-            if (!member_id || !channel_id) {
-                return response.status(400).json({
-                    ok: false,
-                    message: "member_id y channel_id son obligatorios"
-                });
-            }
-
-            const newMember = await channel_members_service.create({
-                member_id,
-                channel_id
-            });
+            const new_member = await channel_members_service.addMember({ channel_id, email });
 
             response.status(201).json({
                 ok: true,
-                message: "Miembro agregado al canal",
-                data: newMember
+                message: "Miembro agregado correctamente",
+                data: { member: new_member }
             });
         } catch (error) {
-            console.error(error);
-            response.status(500).json({
-                ok: false,
-                message: "Error interno del servidor"
-            });
+            console.error("Error al agregar miembro:", error);
+            const status = error.status || 500;
+            response.status(status).json({ ok: false, message: error.message });
         }
     }
 }
-const channelMembersController = new ChannelMembersController();
-export default channelMembersController
+
+const channel_members_controller = new ChannelMembersController();
+export default channel_members_controller;

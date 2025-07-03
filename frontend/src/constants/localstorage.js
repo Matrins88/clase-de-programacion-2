@@ -1,6 +1,7 @@
 //GUARDO MIS CLAVES
 const LOCALSTORAGE_KEYS ={
     AUTHORIZATION_TOKEN: 'authorization_token',
+    AUTH_USER: 'AUTH_USER'
 }
 
 export default LOCALSTORAGE_KEYS

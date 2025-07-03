@@ -18,5 +18,12 @@ workspace_router.delete(
  '/:workspace_id', authorizationMiddleware,
   workspace_controller.delete
 )
+// Obtener un workspace por su ID
+workspace_router.get(
+  '/:workspace_id',
+  authorizationMiddleware,
+  workspace_controller.getById
+)
+
 
 export default workspace_router;

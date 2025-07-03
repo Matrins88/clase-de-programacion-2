@@ -84,6 +84,20 @@ button[disabled] {
   background-color: #ccc;
   cursor: not-allowed;
 }
+.register-button {
+  background-color: #eee;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #ddd;
+}
 
 /* Error */
 span {

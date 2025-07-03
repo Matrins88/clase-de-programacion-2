@@ -16,22 +16,24 @@
 /* Contenedor para sidebar y contenido */
 .workspace-detail-content {
   display: flex;
-  gap: 2rem;
+  height: 80vh;
 }
 
-/* Sidebar de canales */
+/* Sidebar de canales bolck del constado*/
 .sidebar-channels {
-  width: 280px;
-  background-color: #3f0e40;
+  width: 260px;
+  background-color: #312b44;
   color: white;
   padding: 1rem;
-  border-radius: 10px;
-  height: fit-content;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* Botón para crear canal */
 button {
-  background-color: #4a154b;
+  background-color: #251d4e;
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -87,14 +89,12 @@ form input[type="text"]:focus {
   border-color: #4a154b;
 }
 
-/* Chat container para que tome todo el ancho restante */
+/* Chat */
 .chat-container {
   flex: 1;
-  background-color: white;
-  border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  min-height: 500px;
+  background-color: #b4c2c1;
+  overflow-y: auto;
 }
 
 /* Responsive */

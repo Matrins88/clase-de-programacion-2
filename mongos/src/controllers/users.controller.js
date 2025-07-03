@@ -75,77 +75,58 @@ class UserController {
 
             //Primero necesito verificar que el token lo emiti yo y que hay token
             if (!verification_token) {
-                response.status(400).send(
-                    {
-                        ok: false,
-                        message: "Donde esta el token de verificacion 👻👻"
-                    }
-                )
-                //Return para cortar la ejecucion de la funcion
-                return
+                 return response.redirect('http://localhost:5173/login?verified=missing')
             }
             //Verify intententara ver si la firma es correcta, en caso de no ser correcta emitira (throw) un error
-            const contenido = jwt.verify(verification_token, "clave_super_secreta123_nadie_la_conoce")
+           const contenido = jwt.verify(verification_token, ENVIRONMENT.JWT_SECRET_KEY)
 
-            console.log({ contenido })
-            //Segundo, buscar al usuario por el mail en la DB
-            //Tercero, checkeamos si no esta previamente validado
-            //Cuarto (Si el tercero da false), cambiamos al usuario de no-verificado a verificado
-            await userRepository.verifyUserEmail({email: contenido.email})
+            const user = await userRepository.findByEmail({ email: contenido.email })
 
-            response.send({
-                status: 200,
-                ok: true,
-                message: 'Usuario validado con exito'
-            })
-            
-            
-        }
-        catch (error) {
+            if (!user) {
+                return response.redirect('http://localhost:5173/login?verified=notfound')
+            }
+
+            if (user.verified) {
+                return response.redirect('http://localhost:5173/login?verified=already')
+            }
+
+            await userRepository.verifyUserEmail({ email: contenido.email })
+
+            return response.redirect('http://localhost:5173/login?verified=success')
+
+        } catch (error) {
             console.log('Hubo un error', error)
-            if(error.status){ //checkeo si es un error mio
-                response.status(error.status).send(
-                    {
-                        message: error.message, 
-                        ok: false
-                    }
-                )
-                return //corto mi ejecucion
-            }
-            else{
-                response.status(500).send({message: 'Error interno del servidor', ok: false})
-            }
+            return response.redirect('http://localhost:5173/login?verified=error')
         }
-
     }
 
-    async login(request, response){
-        try{
-        
-            const {email, password} = request.body
+    async login(request, response) {
+        try {
 
-            if(!email){
-                throw {status: 400, message: 'no hay email!'}
+            const { email, password } = request.body
+
+            if (!email) {
+                throw { status: 400, message: 'no hay email!' }
             }
-            if(!password){
-                throw {status: 400, message: 'no hay password!'}
+            if (!password) {
+                throw { status: 400, message: 'no hay password!' }
             }
-            
+
             //PASO 1.1: Buscar al usuario en la DB por mail
-            const user = await userRepository.findByEmail({email: email})
-            if(!user){
-                throw {status: 404, message: 'Usuario no encontrado!'}
+            const user = await userRepository.findByEmail({ email: email })
+            if (!user) {
+                throw { status: 404, message: 'Usuario no encontrado!' }
             }
 
             //PASO 1.2: Verificar que el mail este validado
-            if(!user.verified){
-                throw {status: 400, message: "Valida tu mail primero"}
+            if (!user.verified) {
+                throw { status: 400, message: "Valida tu mail primero" }
             }
-            
+
             //PASO 2: Verificar si la contraseña que el cliente paso coincide con la que tengo en mi DB
             const is_same_password = await bcrypt.compare(password, user.password)
-            if(!is_same_password){
-                throw {status: 400, message: 'Contraseña no es valida'}
+            if (!is_same_password) {
+                throw { status: 400, message: 'Contraseña no es valida' }
             }
 
             //PASO 3: Crear un token con los datos no-sensibles del usuario (sesion)
@@ -154,8 +135,8 @@ class UserController {
                 email: user.email,
                 id: user._id,
                 created_at: user.created_at
-            }, 
-            ENVIRONMENT.JWT_SECRET_KEY
+            },
+                ENVIRONMENT.JWT_SECRET_KEY
             )
             //PASO 4: Responder con el token
             response.status(200).send({
@@ -163,24 +144,32 @@ class UserController {
                 status: 200,
                 message: 'Usuario logueado',
                 data: {
-                    authorization_token: authorization_token
+                    authorization_token: authorization_token,
+                    user: {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        created_at: user.created_at
+                    }
+
                 }
+
             })
         }
-        catch(error){
-            
-            if(error.status){ 
+        catch (error) {
+
+            if (error.status) {
                 response.status(error.status).send(
                     {
-                        message: error.message, 
+                        message: error.message,
                         ok: false
                     }
                 )
-                return 
+                return
             }
-            else{
+            else {
                 console.log('Hubo un error', error)
-                response.status(500).send({message: 'Error interno del servidor', ok: false})
+                response.status(500).send({ message: 'Error interno del servidor', ok: false })
             }
         }
     }
@@ -188,21 +177,21 @@ class UserController {
     // body: {email}
     // Debe re-enviar el mail de verificacion si no esta verificado
 
-    async resendVerificationEmail (request, response){
-        try{
-            const {email} = request.body
+    async resendVerificationEmail(request, response) {
+        try {
+            const { email } = request.body
 
             //Buscamos en la DB al usuario por mail
-            const user = await userRepository.findByEmail({email})
+            const user = await userRepository.findByEmail({ email })
             //Checkeamos que exista
-            if(!user){
+            if (!user) {
                 throw {
                     status: 404,
                     message: 'Usuario no encontrado'
                 }
             }
 
-            if(user.verified){
+            if (user.verified) {
                 throw {
                     status: 400,
                     message: 'El usuario ya esta verificado'
@@ -211,9 +200,9 @@ class UserController {
             //Creamos un token de verificacion para generar la URL de verificacion
             const verification_token = jwt.sign({ email: email }, ENVIRONMENT.JWT_SECRET_KEY)
             await sendVerificationEmail({
-                email, 
-                name: user.name, 
-                redirect_url:  `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
+                email,
+                name: user.name,
+                redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
             })
 
             //Si todo sale bien respondemos con codigo exitoso
@@ -224,20 +213,20 @@ class UserController {
             })
             return
         }
-        catch(error){
-            
-            if(error.status){ 
+        catch (error) {
+
+            if (error.status) {
                 response.status(error.status).send(
                     {
-                        message: error.message, 
+                        message: error.message,
                         ok: false
                     }
                 )
-                return 
+                return
             }
-            else{
+            else {
                 console.log('Hubo un error', error)
-                response.status(500).send({message: 'Error interno del servidor', ok: false})
+                response.status(500).send({ message: 'Error interno del servidor', ok: false })
             }
         }
     }

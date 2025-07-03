@@ -24,7 +24,7 @@ export const getChannels = async ({workspace_id}) => {
         throw error
     }
 }
-export const createChannel = async ({name, workspace_id}) => {
+export const createChannel = async ({name, workspace_id, user_id}) => {
     try{
         const server_response = await fetch(
             `${ENVIRONMENT.URL_API}/api/channels/${workspace_id}`, 
@@ -34,7 +34,7 @@ export const createChannel = async ({name, workspace_id}) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.AUTHORIZATION_TOKEN)}`
                 },
-                body: JSON.stringify({name})
+                body: JSON.stringify({name, user_id})
             }
         )
         const data = await server_response.json()
@@ -45,3 +45,23 @@ export const createChannel = async ({name, workspace_id}) => {
         throw error
     }
 } 
+export const addMemberToChannel = async (workspace_id, channel_id, email) => {
+  const token = localStorage.getItem("AUTHORIZATION_TOKEN");
+
+  const res = await fetch(`${ENVIRONMENT.URL}/api/channel-members/${workspace_id}/${channel_id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ email })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || 'No se pudo agregar el miembro');
+  }
+
+  return data;
+};

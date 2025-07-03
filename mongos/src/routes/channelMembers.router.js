@@ -1,13 +1,18 @@
-import express from 'express';
-import channel_members_controller from '../controllers/channelMembers.controller.js';
-import authorizationMiddleware from '../middlewares/auth.middleware.js'; // 👈 importá esto
+import express from "express";
+import authorizationMiddleware from "../middlewares/auth.middleware.js";
+import workspaceMiddleware from "../middlewares/workspace.middleware.js";
+import channelMiddleware from "../middlewares/channel.middleware.js";
+import channel_members_controller from "../controllers/channelMembers.controller.js";
 
-const channelMembersRoutes = express.Router();
+const channelMembersRouter = express.Router();
 
-channelMembersRoutes.post(
-  '/:channel_id',
-  authorizationMiddleware, // 👈 protegé la ruta
-  channel_members_controller.add
+channelMembersRouter.use(authorizationMiddleware);
+
+channelMembersRouter.post(
+    "/:workspace_id/:channel_id",
+    workspaceMiddleware,
+    channelMiddleware,
+    channel_members_controller.addMember
 );
 
-export default channelMembersRoutes;
+export default channelMembersRouter;
