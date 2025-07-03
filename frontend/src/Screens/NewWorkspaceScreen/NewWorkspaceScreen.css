@@ -60,7 +60,7 @@ input:focus {
   background-color: #3e1141;
 }
 
-/* Responsive para celular */
+/* Responsive   */
 @media (max-width: 480px) {
   .form-container {
     padding: 1.5rem;
