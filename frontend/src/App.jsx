@@ -1,29 +1,29 @@
 import React from 'react'
-import {Route, Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import LoginScreen from './Screens/LoginScreen/LoginScreen'
-import HomeScreen from './Screens/HomeScreen/HomeScreen'
 import RegisterScreen from './Screens/RegisterScreen/RegisterScreen'
-import AuthProtectRoute from './Components/AuthProtectRoute/AuthProtecRoute.jsx'
-
+import HomeScreen from './Screens/HomeScreen/HomeScreen'
+import AuthProtectRoute from './Components/AuthProtectRoute/AuthProtectRoute'
+import WorkspaceDetailScreen from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
+import NewWorkspaceScreen from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
+import ProtectedLayout from './Components/ProtectedLayout/ProtectedLayout'
 
 const App = () => {
-  console.log(import.meta.env.VITE_URL_API)
   return (
-    <div>
-     
-      <Routes>s
-        <Route path="/" element={<LoginScreen />}/>
-        <Route path="/login" element={<LoginScreen />}/>
-        <Route path="/resgistro" element={<RegisterScreen />}/>
-        
-     
-        <Route element= {<AuthProtectRoute/>}>
-          <Route path="/home" element={<HomeScreen />}/>
-        </Route>
+    <Routes>
+      <Route path='/' element={<LoginScreen />} />
+      <Route path='/login' element={<LoginScreen />} />
+      <Route path='/register' element={<RegisterScreen />} />
 
-      </Routes>
-     
-    </div>
+      <Route element={<AuthProtectRoute />}>
+        <Route element={<ProtectedLayout />}>
+          <Route path='/home' element={<HomeScreen />} />
+          <Route path='/new' element={<NewWorkspaceScreen />} />
+          <Route path='/workspaces/:workspace_id' element={<WorkspaceDetailScreen />} />
+          <Route path='/workspaces/:workspace_id/channels/:channel_id' element={<WorkspaceDetailScreen />} />
+        </Route>
+      </Route>
+    </Routes>
   )
 }
 

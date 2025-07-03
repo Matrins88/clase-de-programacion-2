@@ -1,0 +1,29 @@
+.app-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f5f8;
+  min-height: 100vh;
+  color: #1d1c1d;
+  padding: 1rem;
+}
+/* Estilo base para el layout */
+.slack-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Barra lateral */
+.sidebar {
+  width: 260px;
+  background-color: #3f0e40;
+  color: white;
+  padding: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Contenido principal */
+.main-content {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  overflow-y: auto;
+}

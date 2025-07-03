@@ -1,0 +1,77 @@
+.new-workspace-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.new-workspace-screen h1 {
+  text-align: center;
+  color: #1d1c1d;
+  margin-bottom: 2rem;
+}
+
+.form-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border-color: #4a154b;
+  outline: none;
+}
+
+.create-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4a154b;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.create-button:hover {
+  background-color: #3e1141;
+}
+
+/* Responsive para celular */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  input {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .create-button {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,108 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f5f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1d1c1d;
+}
+
+/* Contenedor principal */
+.register-container {
+  max-width: 400px;
+  margin: 3rem auto;
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.register-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Campos del formulario */
+.register-container form > div {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas */
+.register-container label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Inputs */
+.register-container input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.register-container input:focus {
+  border-color: #4a154b;
+}
+
+/* Mensaje de error */
+.register-container span {
+  display: block;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Botones */
+.register-container button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  background-color: #4a154b;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-container button:hover:not(:disabled) {
+  background-color: #3e1141;
+}
+
+.register-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .register-container {
+    margin: 2rem 1rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .register-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .register-container input,
+  .register-container button {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}

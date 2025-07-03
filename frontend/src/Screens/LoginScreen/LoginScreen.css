@@ -1,0 +1,111 @@
+/* Fondo de pantalla */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f5f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor principal */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Tarjeta de login */
+form {
+  background-color: white;
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Título */
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1d1c1d;
+}
+
+/* Cada campo */
+form > div {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label */
+label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #1d1c1d;
+}
+
+/* Input */
+input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border-color: #044509;
+}
+
+/* Botones */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type='submit'] {
+  background-color: #044509;
+  color: white;
+}
+
+button[type='submit']:hover {
+  background-color: #329347;
+}
+
+button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Error */
+span {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  display: block;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .login-card input,
+  .login-card button {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}

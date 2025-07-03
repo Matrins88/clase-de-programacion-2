@@ -1,0 +1,115 @@
+/* Fondo general con gradiente suave */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #f5f7fa, #e4e7ed);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor principal */
+.home-screen {
+  padding: 2rem 4%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título */
+.home-screen h1 {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #1d1c1d;
+}
+
+/* Contenedor de workspaces */
+.workspace-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+
+.create-link {/*espacio de trabajo*/
+  margin-bottom: 2rem;
+  background-color: #044509;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.create-link:hover {
+  background-color: #32903a;
+}
+
+
+/* Tarjeta individual */
+.workspace-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.8rem 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.workspace-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Título del workspace */
+.workspace-card h2 {
+  font-size: 1.4rem;
+  color: #1d1c1d;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Botón o link para entrar */ 
+.workspace-card a {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  background-color: #044509;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.workspace-card a:hover {
+  background-color: #329347;
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+  .home-screen h1 {
+    font-size: 1.8rem;
+  }
+
+  .workspace-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .workspace-card a {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-screen {
+    padding: 1.5rem 2%;
+  }
+
+  .workspace-card {
+    padding: 1.2rem;
+  }
+}

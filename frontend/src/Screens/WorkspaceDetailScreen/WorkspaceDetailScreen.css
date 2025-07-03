@@ -1,0 +1,114 @@
+/* Contenedor principal */
+.workspace-detail {
+  padding: 2rem 4%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background: #f9f9f9;
+  color: #1d1c1d;
+}
+
+/* Título */
+.workspace-detail h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Contenedor para sidebar y contenido */
+.workspace-detail-content {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Sidebar de canales */
+.sidebar-channels {
+  width: 280px;
+  background-color: #3f0e40;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+/* Botón para crear canal */
+button {
+  background-color: #4a154b;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0.5rem 0.25rem 0.5rem 0;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #611f69;
+}
+
+button[type="button"] {
+  background-color: #777;
+}
+
+button[type="button"]:hover {
+  background-color: #555;
+}
+
+/* Formulario nuevo canal */
+form {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 320px;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+form input[type="text"] {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus {
+  border-color: #4a154b;
+}
+
+/* Chat container para que tome todo el ancho restante */
+.chat-container {
+  flex: 1;
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  min-height: 500px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .workspace-detail-content {
+    flex-direction: column;
+  }
+  
+  .sidebar-channels {
+    width: 100%;
+    height: auto;
+  }
+  
+  .chat-container {
+    min-height: 300px;
+  }
+}
