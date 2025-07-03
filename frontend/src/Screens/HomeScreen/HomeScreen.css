@@ -34,7 +34,7 @@ body {
 
 .create-link {/*espacio de trabajo*/
   margin-bottom: 2rem;
-  background-color: #044509;
+  background-color: #1c0846;
   color: white;
   padding: 0.7rem 1.2rem;
   text-decoration: none;
@@ -44,7 +44,7 @@ body {
 }
 
 .create-link:hover {
-  background-color: #32903a;
+  background-color: #252851;
 }
 
 
