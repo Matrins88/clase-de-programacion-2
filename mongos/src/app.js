@@ -100,12 +100,11 @@ app.get('/private-info',authorizationMiddleware,(request, response) =>{
 // es json
 
 
-app.listen (ENVIRONMENT.PORT,()=>{
-    console.log(`la aplicacion de esta escuchando en http://localhost:${ENVIRONMENT.PORT}`)
-    //se escuche en el puerto 3000 y le paso una callback de confirmacion
-    console.log(`esta app se escucha en local host puerto ${ENVIRONMENT.PORT}`)
-})
-
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(ENVIRONMENT.PORT, () => {
+    console.log(`App escuchando en puerto ${ENVIRONMENT.PORT}`);
+  });
+}
 
 //ENVIAR UN MAIL
 /*const enviarMailTest = async () => {
