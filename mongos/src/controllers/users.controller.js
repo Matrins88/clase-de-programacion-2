@@ -54,7 +54,7 @@ class UserController {
             {
                 email: request.body.email,
                 name: request.body.name,
-                redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
+                redirect_url: `${ENVIRONMENT.BACKEND_URL}/api/users/verify?verify_token=${verification_token}`
             }
         )
 
@@ -64,6 +64,7 @@ class UserController {
         })
     }
     async getAll(request, response) {
+     
 
     }
 
@@ -75,7 +76,7 @@ class UserController {
 
             //Primero necesito verificar que el token lo emiti yo y que hay token
             if (!verification_token) {
-                 return response.redirect('http://localhost:5173/login?verified=missing')
+                 return response.redirect(`${ENVIRONMENT.FRONTEND_URL}/login?verified=missing`)
             }
             //Verify intententara ver si la firma es correcta, en caso de no ser correcta emitira (throw) un error
            const contenido = jwt.verify(verification_token, ENVIRONMENT.JWT_SECRET_KEY)
@@ -83,32 +84,35 @@ class UserController {
             const user = await userRepository.findByEmail({ email: contenido.email })
 
             if (!user) {
-                return response.redirect('http://localhost:5173/login?verified=notfound')
+                return response.redirect(`${ENVIRONMENT.FRONTEND_URL}/login?verified=notfound`)
             }
 
             if (user.verified) {
-                return response.redirect('http://localhost:5173/login?verified=already')
+                return response.redirect(`${ENVIRONMENT.FRONTEND_URL}/login?verified=already`)
             }
 
             await userRepository.verifyUserEmail({ email: contenido.email })
 
-            return response.redirect('http://localhost:5173/login?verified=success')
+            return response.redirect(`${ENVIRONMENT.FRONTEND_URL}/login?verified=success`)
 
         } catch (error) {
             console.log('Hubo un error', error)
-            return response.redirect('http://localhost:5173/login?verified=error')
+            return response.redirect(`${ENVIRONMENT.FRONTEND_URL}/login?verified=error`)
         }
     }
 
     async login(request, response) {
         try {
-
+              console.log(' LOGIN solicitado');
+              console.log('Body:', request.body);
             const { email, password } = request.body
 
             if (!email) {
+                 console.log(' Falta email');
                 throw { status: 400, message: 'no hay email!' }
             }
             if (!password) {
+                console.log(' Falta password');
                 throw { status: 400, message: 'no hay password!' }
             }
 
@@ -125,6 +129,7 @@ class UserController {
 
             //PASO 2: Verificar si la contraseña que el cliente paso coincide con la que tengo en mi DB
             const is_same_password = await bcrypt.compare(password, user.password)
+             console.log(' Password coincide:', is_same_password);
             if (!is_same_password) {
                 throw { status: 400, message: 'Contraseña no es valida' }
             }
@@ -157,7 +162,7 @@ class UserController {
             })
         }
         catch (error) {
-
+              console.error('Error en login:', error);
             if (error.status) {
                 response.status(error.status).send(
                     {
@@ -202,7 +207,7 @@ class UserController {
             await sendVerificationEmail({
                 email,
                 name: user.name,
-                redirect_url: `http://localhost:3000/api/users/verify?verify_token=${verification_token}`
+                redirect_url: `${ENVIRONMENT.BACKEND_URL}/api/users/verify?verify_token=${verification_token}`
             })
 
             //Si todo sale bien respondemos con codigo exitoso

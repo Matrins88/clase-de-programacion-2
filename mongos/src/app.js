@@ -17,6 +17,8 @@ import membersWorkspaceRouter from './routes/membersWorkspace.Router.js';
 import channelRouter from './routes/channels.router.js';
 import messageRouter from './routes/messages.router.js';
 import channelMembersRoutes from './routes/channelMembers.router.js'
+import errorLogger from './middlewares/errorLogger.middleware.js';
+import errorHandler from './middlewares/errorHandler.middleware.js';
 
 
 
@@ -24,6 +26,8 @@ import channelMembersRoutes from './routes/channelMembers.router.js'
 
 
 const app= express()// crea una aplicacion de express
+
+
 
 //deshabilita la politica de cors
 app.use(cors())
@@ -53,6 +57,8 @@ app.use ('/api/members', membersWorkspaceRouter);
 app.use('/api/channels', channelRouter)
 app.use('/api/messages', messageRouter)
 app.use('/api/channel-members', channelMembersRoutes);
+app.use(errorLogger);
+app.use(errorHandler);
 
 
 

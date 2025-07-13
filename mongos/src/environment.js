@@ -15,5 +15,7 @@ export const ENVIRONMENT = {
     GMAIL_USERNAME2: process.env.GMAIL_USERNAME2,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     DB_MONGO_PASSWORD: process.env.DB_MONGO_PASSWORD,
+    BACKEND_URL: process.env.BACKEND_URL, 
+    FRONTEND_URL: process.env.FRONTEND_URL 
 }
 
