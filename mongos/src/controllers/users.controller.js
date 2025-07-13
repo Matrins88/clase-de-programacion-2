@@ -112,7 +112,7 @@ class UserController {
                 throw { status: 400, message: 'no hay email!' }
             }
             if (!password) {
-                console.log(' Falta password');
+                console.log(' falta');
                 throw { status: 400, message: 'no hay password!' }
             }
 
