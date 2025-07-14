@@ -5,23 +5,25 @@ import useCustomQuery from '../../hooks/useCustomQuery'
 import useForm from '../../hooks/useForm'
 import { getChannels, createChannel } from '../../services/channelService'
 import ENVIRONMENT from '../../constants/environment'
+import { FaTimes } from "react-icons/fa";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen = true, onClose }) => {
   const auth_user = JSON.parse(localStorage.getItem("AUTH_USER"))
   const auth_token = localStorage.getItem("AUTHORIZATION_TOKEN")
   const { workspace_id } = useParams()
 
-  const handleLogout = () => {
-    localStorage.removeItem("AUTH_USER")
-    localStorage.removeItem("AUTHORIZATION_TOKEN")
-    window.location.href = "/login"
-  }
   const [showAddFormFor, setShowAddFormFor] = useState(null)
   const [emailToAdd, setEmailToAdd] = useState('')
   const [message, setMessage] = useState('')
   const [is_creating_channel, setIsCreatingChannel] = useState(false)
 
   const initial_form_state = { name: '' }
+
+  const handleLogout = () => {
+    localStorage.removeItem("AUTH_USER")
+    localStorage.removeItem("AUTHORIZATION_TOKEN")
+    window.location.href = "/login"
+  }
 
   const handleSubmitNewChannel = () => {
     sendRequest(async () =>
@@ -87,17 +89,24 @@ const Sidebar = () => {
     setTimeout(() => setMessage(''), 4000)
   }
 
+  const sidebarClass = isOpen ? "sidebar open" : "sidebar"
+
   return (
-    <aside className="sidebar">
+    <aside className={sidebarClass}>
       <nav>
-        <h2 className="logo"> Mi App</h2>
+        <h2 className="logo">Mi App</h2>
+
+        {onClose && (
+          <button className="close-sidebar" onClick={onClose}>
+            <FaTimes size={20} />
+          </button>
+        )}
 
         {auth_user && <p className="user-info">👤 {auth_user.name}</p>}
 
-        <Link to="/home" className="sidebar-link"> Inicio</Link>
-        <Link to="/new" className="sidebar-link"> Nuevo workspace</Link>
+        <Link to="/home" className="sidebar-link">Inicio</Link>
+        <Link to="/new" className="sidebar-link">Nuevo workspace</Link>
         <button onClick={handleLogout} className="sidebar-link button-link">Cerrar sesión</button>
-
 
         {workspace_id && (
           <>
@@ -106,15 +115,26 @@ const Sidebar = () => {
               loading ? <p>Cargando...</p> : (
                 channels.length > 0 ? channels.map((channel) => (
                   <div key={channel._id} className="channel-block">
-                    <Link to={`/workspaces/${channel.workspace_id}/channels/${channel._id}`} className="channel-link">
+                    <Link
+                      to={`/workspaces/${channel.workspace_id}/channels/${channel._id}`}
+                      className="channel-link"
+                    >
                       #{channel.name}
                     </Link>
-                    <button onClick={() => setShowAddFormFor(prev => prev === channel._id ? null : channel._id)} className="add-member-toggle">
+                    <button
+                      onClick={() =>
+                        setShowAddFormFor(prev => prev === channel._id ? null : channel._id)
+                      }
+                      className="add-member-toggle"
+                    >
                       {showAddFormFor === channel._id ? 'Cancelar' : 'Agregar miembro'}
                     </button>
                     {
                       showAddFormFor === channel._id && (
-                        <form onSubmit={(e) => handleAddMember(e, channel._id)} className="add-member-form">
+                        <form
+                          onSubmit={(e) => handleAddMember(e, channel._id)}
+                          className="add-member-form"
+                        >
                           <input
                             type="email"
                             placeholder="Email del miembro"
@@ -133,7 +153,10 @@ const Sidebar = () => {
 
             {
               !is_creating_channel ? (
-                <button onClick={() => setIsCreatingChannel(true)} className="create-channel-button">
+                <button
+                  onClick={() => setIsCreatingChannel(true)}
+                  className="create-channel-button"
+                >
                   + Crear canal
                 </button>
               ) : (

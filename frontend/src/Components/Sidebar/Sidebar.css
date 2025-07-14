@@ -1,161 +1,32 @@
-/* Sidebar.css */
-
 .sidebar {
-  width: 280px;
-  min-height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #ddd;
-  padding: 1.5rem;
-  position: fixed;
-  top: 0;
-  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #cebfbf;
+  color: white;
   overflow-y: auto;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  z-index: 20;
+  padding: 20px;
+  position: relative;
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #4a154b;
-}
-
-.user-info {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.sidebar-link {
-  display: block;
-  padding: 0.5rem 0;
-  margin-bottom: 0.5rem;
-  text-decoration: none;
-  color: #4a154b;
-  font-weight: 500;
-  border: none;
-  background: none;
-  cursor: pointer;
-  text-align: left;
-}
-
-.sidebar-link:hover {
-  text-decoration: underline;
-}
-
-.section-title {
-  font-size: 1.2rem;
-  margin: 1.5rem 0 0.5rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.channel-block {
-  margin-bottom: 1rem;
-}
-
-.channel-link {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  color: #333;
-  text-decoration: none;
-}
-
-.channel-link:hover {
-  text-decoration: underline;
-}
-
-.add-member-toggle,
-.create-channel-button,
-.add-member-form button,
-.create-channel-form button {
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
-  background-color: #e6e6e6;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.add-member-toggle:hover,
-.create-channel-button:hover,
-.add-member-form button:hover,
-.create-channel-form button:hover {
-  background-color: #d0d0d0;
-}
-
-.add-member-form,
-.create-channel-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.4rem;
-}
-
-.add-member-form input,
-.create-channel-form input {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-}
-
-.message-text {
-  color: green;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  text-align: center;
-}
-
-@media (max-width:200px) {
+/* Drawer móvil */
+@media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 0;
+    top: 50px; /* altura header móvil */
+    left: -100%;
+    height: calc(100vh - 50px);
+  }
+  .sidebar.open {
     left: 0;
-    right: 0;
-    width: 100%;
-    height: auto;
-    min-height: auto;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    flex-wrap: wrap;
   }
+  /* Ocultar botón de cerrar en escritorio */
+ 
 
-  .logo {
-    margin-bottom: 0;
-    font-size: 1rem;
-  }
-
-  .user-info {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-  }
-
-  .sidebar-link {
-    padding: 0.4rem;
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  /* Opcional: ocultar los canales y formularios en mobile para que no rompan el layout */
-  .section-title,
-  .channel-block,
-  .add-member-form,
-  .create-channel-form,
-  .create-channel-button,
-  .add-member-toggle {
+}
+  @media (min-width: 768px) {
+  .close-sidebar {
     display: none;
   }
 }

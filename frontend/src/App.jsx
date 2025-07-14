@@ -7,17 +7,17 @@ import HomeScreen from './Screens/HomeScreen/HomeScreen'
 import AuthProtectRoute from './Components/AuthProtectRoute/AuthProtectRoute'
 import WorkspaceDetailScreen from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
 import NewWorkspaceScreen from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
-import MainLayout from './Layouts/MainLayout' // 💡 Importamos el layout nuevo
+import MainLayout from './Layouts/MainLayout'
 
 const App = () => {
   return (
     <Routes>
-      {/* Rutas públicas */}
+      {/* Rutas públicas sin layout */}
       <Route path='/' element={<LoginScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
 
-      {/* Rutas protegidas */}
+      {/* Rutas protegidas con layout */}
       <Route element={<AuthProtectRoute />}>
         <Route
           path='/home'
@@ -57,4 +57,3 @@ const App = () => {
 }
 
 export default App
-

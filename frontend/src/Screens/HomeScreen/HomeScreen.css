@@ -1,10 +1,25 @@
 /* HomeScreen.css */
 
 .home-screen {
-  margin-left: 280px; /* espacio para el sidebar */
   padding: 2rem;
   min-height: 100vh;
   background-color: #f9f9f9;
+  transition: margin-left 0.3s ease;
+}
+
+/* Espacio solo en desktop para el sidebar de 250px */
+@media (min-width: 769px) {
+  .home-screen {
+     margin-left: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-screen {
+    margin-left: 0;
+    padding: 1.5rem 1rem;
+    padding-top: 60px; /* deja espacio para la barra superior (hamburguesa) */
+  }
 }
 
 .home-screen h1 {
@@ -62,11 +77,4 @@
 
 .workspace-card a:hover {
   text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .home-screen {
-    margin-left: 0;
-    padding: 1.5rem 1rem;
-  }
 }
