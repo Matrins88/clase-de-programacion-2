@@ -6,11 +6,16 @@ import useForm from '../../hooks/useForm'
 import { getChannels, createChannel } from '../../services/channelService'
 import ENVIRONMENT from '../../constants/environment'
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = () => {
   const auth_user = JSON.parse(localStorage.getItem("AUTH_USER"))
   const auth_token = localStorage.getItem("AUTHORIZATION_TOKEN")
   const { workspace_id } = useParams()
 
+  const handleLogout = () => {
+    localStorage.removeItem("AUTH_USER")
+    localStorage.removeItem("AUTHORIZATION_TOKEN")
+    window.location.href = "/login"
+  }
   const [showAddFormFor, setShowAddFormFor] = useState(null)
   const [emailToAdd, setEmailToAdd] = useState('')
   const [message, setMessage] = useState('')
@@ -91,7 +96,8 @@ const Sidebar = ({ onLogout }) => {
 
         <Link to="/home" className="sidebar-link"> Inicio</Link>
         <Link to="/new" className="sidebar-link"> Nuevo workspace</Link>
-        <button onClick={onLogout} className="sidebar-link button-link">Cerrar sesión</button>
+        <button onClick={handleLogout} className="sidebar-link button-link">Cerrar sesión</button>
+
 
         {workspace_id && (
           <>
