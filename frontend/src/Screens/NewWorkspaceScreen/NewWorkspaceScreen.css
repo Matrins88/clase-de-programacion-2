@@ -1,77 +1,103 @@
+/* src/Screens/NewWorkspaceScreen/NewWorkspaceScreen.css */
+
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
 .new-workspace-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem 1rem;
+  max-width: 400px;
+  margin: 3rem auto;
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1d1c1d;
 }
 
 .new-workspace-screen h1 {
   text-align: center;
-  color: #1d1c1d;
   margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #4a154b; /* Color vino oscuro, igual que botones */
 }
 
 .form-container {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
 }
 
 label {
-  font-weight: 500;
   margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a154b;
 }
 
-input {
+input[type="text"] {
   padding: 0.75rem 1rem;
-  border-radius: 8px;
   border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 1rem;
-  transition: border 0.3s;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
-input:focus {
+input[type="text"]:focus {
   border-color: #4a154b;
-  outline: none;
 }
 
 .create-button {
   width: 100%;
   padding: 0.75rem;
   background-color: #4a154b;
-  color: white;
-  font-weight: bold;
   border: none;
   border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
-.create-button:hover {
+.create-button:hover:not(:disabled) {
   background-color: #3e1141;
 }
 
-/* Responsive   */
+.create-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Mensaje de carga centrado */
+.new-workspace-screen > span {
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #4a154b;
+}
+
+/* Responsive para móviles */
 @media (max-width: 480px) {
-  .form-container {
-    padding: 1.5rem;
+  .new-workspace-screen {
+    margin: 2rem 1rem;
+    padding: 1.5rem 1rem;
   }
 
-  input {
-    font-size: 0.95rem;
-    padding: 0.65rem 0.9rem;
+  .new-workspace-screen h1 {
+    font-size: 1.5rem;
   }
 
+  input[type="text"],
   .create-button {
     font-size: 0.95rem;
+    padding: 0.65rem;
   }
 }

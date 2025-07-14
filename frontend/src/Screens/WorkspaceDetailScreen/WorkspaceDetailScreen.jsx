@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { createChannel, getChannels } from '../../services/channelService'
-import { Navigate, useParams } from 'react-router-dom'
-import SidebarChannels from '../../Components/SidebarChannels/SidebarChannels'
+import { Navigate, useParams, Link } from 'react-router-dom'
 import useCustomQuery from '../../hooks/useCustomQuery'
 import useForm from '../../hooks/useForm'
 import './WorkspaceDetailScreen.css'
 import Chat from '../../Components/Chat/chat'
+
 const WorkspaceDetailScreen = () => {
   const auth_user = JSON.parse(localStorage.getItem("AUTH_USER"))
   const auth_token = localStorage.getItem("AUTHORIZATION_TOKEN")
   const { workspace_id, channel_id } = useParams()
   const [is_creating_channel, setIsCreatingChannel] = useState(false)
+  const [showAddFormFor, setShowAddFormFor] = useState(null)
+  const [emailToAdd, setEmailToAdd] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmitNewChannel = () => {
     sendRequest(async () =>
@@ -45,29 +48,15 @@ const WorkspaceDetailScreen = () => {
     name: ''
   }
 
-  const {
-    form_state,
-    handleSubmit,
-    handleChange
-  } = useForm({
+  const { form_state, handleSubmit, handleChange } = useForm({
     onSubmit: handleSubmitNewChannel,
     initial_form_state
   })
 
-  const handleChangeCreateMode = () => {
-    setIsCreatingChannel(true)
-  }
+  const handleChangeCreateMode = () => setIsCreatingChannel(true)
+  const handleQuitCreateMode = () => setIsCreatingChannel(false)
 
-  const handleQuitCreateMode = () => {
-    setIsCreatingChannel(false)
-  }
-
-  const {
-    response: channels_response,
-    error,
-    loading,
-    sendRequest
-  } = useCustomQuery()
+  const { response: channels_response, loading, sendRequest } = useCustomQuery()
 
   useEffect(() => {
     sendRequest(async () => getChannels({ workspace_id }))
@@ -75,9 +64,7 @@ const WorkspaceDetailScreen = () => {
 
   if (!loading && channels_response) {
     if (!channel_id && channels_response.data.channels.length > 0) {
-      return (
-        <Navigate to={`/workspaces/${workspace_id}/channels/${channels_response.data.channels[0]._id}`} />
-      )
+      return <Navigate to={`/workspaces/${workspace_id}/channels/${channels_response.data.channels[0]._id}`} />
     }
   }
 
@@ -85,46 +72,100 @@ const WorkspaceDetailScreen = () => {
     return (
       <div className="workspace-detail">
         <h1>Cargando espacios de trabajo...</h1>
-        <div className="workspace-detail-content">
-          <div className="sidebar-channels"></div>
-          <div className="chat-container"></div>
-        </div>
       </div>
     )
   }
 
   return (
     <div className="workspace-detail">
-      <h1>Detalle del espacio de trabajo</h1>
-      <div className="workspace-detail-content">
-        <div className="sidebar-channels">
-          {
-            !loading && channels_response && (
-              <SidebarChannels
-                channels={channels_response.data.channels}
-                is_creating_channel={is_creating_channel}
-                onClickCreateChannel={handleChangeCreateMode}
-                onCancelCreateChannel={handleQuitCreateMode}
-                onSubmitCreateChannel={handleSubmit}
-                form_create_channel={form_state}
-                onChangeCreateChannel={handleChange}
-                onAddMemberToChannel={handleAddMemberToChannel} // 
-              />
-            )
-          }
-        </div>
+      <h1>Miespacio de trabajo</h1>
 
-        {
-          channel_id &&
-          !loading &&
-          channels_response &&
-          channels_response.data.channels.length > 0 && (
-            <div className="chat-container">
-              <Chat />
-            </div>
-          )
-        }
-      </div>
+      <aside className="sidebar">
+  <div className="logo">Mi App</div>
+
+  {/* Botón para volver al inicio */}
+  <Link to="/home" className="sidebar-link back-button">
+   Inicio
+  </Link>
+
+  <div className="user-info">Usuario: {auth_user?.name || 'Invitado'}</div>
+
+  <nav>
+    <div className="section-title">Canales</div>
+
+    {/* Lista de canales */}
+    {channels_response?.data.channels.length > 0 ? (
+      channels_response.data.channels.map(channel => (
+        <div key={channel._id} className="channel-block">
+          <Link
+            to={`/workspaces/${workspace_id}/channels/${channel._id}`}
+            className="channel-link"
+          >
+            {channel.name}
+          </Link>
+
+          <button
+            className="add-member-toggle"
+            onClick={() =>
+              setShowAddFormFor(prev => (prev === channel._id ? null : channel._id))
+            }
+          >
+            {showAddFormFor === channel._id ? 'Cancelar' : 'Agregar miembro'}
+          </button>
+
+          {showAddFormFor === channel._id && (
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                handleAddMemberToChannel(channel._id, emailToAdd)
+                  .then(() => setMessage('Miembro agregado con éxito'))
+                  .catch(error => setMessage(error.message || 'Error al agregar miembro'))
+                setEmailToAdd('')
+                setTimeout(() => setMessage(''), 4000)
+              }}
+              className="add-member-form"
+            >
+              <input
+                type="email"
+                placeholder="Email del miembro"
+                value={emailToAdd}
+                onChange={e => setEmailToAdd(e.target.value)}
+                required
+              />
+              <button type="submit">Agregar</button>
+            </form>
+          )}
+        </div>
+      ))
+    ) : (
+      <p>No hay canales</p>
+    )}
+
+    {!is_creating_channel ? (
+      <button onClick={handleChangeCreateMode} className="create-channel-button">
+        Crear canal
+      </button>
+    ) : (
+      <form onSubmit={handleSubmit} className="create-channel-form">
+        <input
+          type="text"
+          placeholder="Nuevo canal"
+          name="name"
+          value={form_state.name}
+          onChange={handleChange}
+        />
+        <button type="submit">Crear</button>
+        <button type="button" onClick={handleQuitCreateMode}>
+          Cancelar
+        </button>
+      </form>
+    )}
+  </nav>
+</aside>
+
+      <main className="chat-container">
+        {channel_id && <Chat />}
+      </main>
     </div>
   )
 }

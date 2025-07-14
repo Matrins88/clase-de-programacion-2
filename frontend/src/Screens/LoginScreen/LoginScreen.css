@@ -1,125 +1,126 @@
-/* Fondo de pantalla */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f4f5f8;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* LoginScreen.css */
 
-/* Contenedor principal */
+/* Contenedor principal centrado */
 .login-container {
+  min-height: 100vh; /* toda la altura de la pantalla */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background: #f0f4f8;
+  padding: 1rem;
 }
 
-/* Tarjeta de login */
-form {
-  background-color: white;
-  padding: 3rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+/* Tarjeta del formulario */
+.login-card {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
+  box-sizing: border-box;
 }
 
 /* Título */
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #1d1c1d;
-}
-
-/* Cada campo */
-form > div {
+.login-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
   margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
+  text-align: center;
 }
 
-/* Label */
-label {
+/* Labels */
+.login-card label {
+  display: block;
+  font-weight: 600;
+  color: #34495e;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #1d1c1d;
+  font-size: 0.9rem;
 }
 
-/* Input */
-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+/* Inputs */
+.login-card input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.2rem;
+  border: 1.5px solid #bdc3c7;
+  border-radius: 4px;
   font-size: 1rem;
-  outline: none;
-  transition: border 0.3s;
+  transition: border-color 0.3s ease;
 }
 
-input:focus {
-  border-color: #044509;
+.login-card input:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
 }
 
 /* Botones */
-button {
+.login-card button {
   width: 100%;
+  background-color: #2980b9;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
   padding: 0.75rem;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button[type='submit'] {
-  background-color: #044509;
-  color: white;
-}
-
-button[type='submit']:hover {
-  background-color: #329347;
-}
-
-button[disabled] {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-.register-button {
-  background-color: #eee;
-  color: #333;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  margin-top: 0.5rem;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.register-button:hover {
-  background-color: #ddd;
+.login-card button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
 }
 
-/* Error */
-span {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: -1rem;
-  margin-bottom: 1rem;
+.login-card button:hover:not(:disabled) {
+  background-color: #1f618d;
+}
+
+/* Error text */
+.login-card span {
   display: block;
+  margin-bottom: 1rem;
+  color: #e74c3c;
+  font-weight: 600;
+  font-size: 0.9rem;
   text-align: center;
 }
+
+/* Mensajes de verificación */
+.login-card p {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Contenedor del link para registrarse */
+.login-card > div:last-child {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #34495e;
+}
+
+.login-card .register-button {
+  background: none;
+  border: none;
+  color: #2980b9;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.3rem;
+}
+
+.login-card .register-button:hover {
+  text-decoration: underline;
+}
+
+/* Responsividad */
 @media (max-width: 480px) {
   .login-card {
-    padding: 1.5rem;
-  }
-
-  .login-title {
-    font-size: 1.5rem;
-  }
-
-  .login-card input,
-  .login-card button {
-    font-size: 0.95rem;
-    padding: 0.65rem;
+    padding: 1.5rem 2rem;
+    max-width: 100%;
   }
 }

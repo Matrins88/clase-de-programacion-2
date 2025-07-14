@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './LoginScreen.css'
 import LOCALSTORAGE_KEYS from '../../constants/localstorage'
 import { useNavigate, useLocation } from 'react-router-dom'  // Importamos useLocation para leer parámetros URL
 import { login } from '../../services/authService'
 import useForm from '../../hooks/useForm'
 import { LOGIN_FIELD_NAMES } from '../../constants/form/login'
+
+
 
 const LoginScreen = () => {
     // Estado para capturar errores y loading
@@ -56,7 +58,15 @@ const LoginScreen = () => {
                 navigate('/home')
             } else {
                 // Si hubo error mostramos mensaje
-                setError(server_response_data.message)
+                // Detectamos si el error es que el usuario no está registrado para mostrar mensaje específico
+                if (
+                  server_response_data.message.toLowerCase().includes('no encontrado') ||
+                  server_response_data.message.toLowerCase().includes('usuario')
+                ) {
+                  setError('Usuario no registrado. Por favor, registrate.')
+                } else {
+                  setError(server_response_data.message)
+                }
             }
         } catch (error) {
             // Error genérico en comunicación con backend
@@ -112,7 +122,21 @@ const LoginScreen = () => {
                 </div>
 
                 {/* Mostrar error en rojo si existe */}
-                {error && <span style={{ color: 'red' }}>{error}</span>}
+                {error && (
+                  <div style={{ color: 'red', marginBottom: '1rem' }}>
+                    {error}
+                    {/* Mostrar botón para ir a registro si el error indica que no está registrado */}
+                    {error.includes('registrado') && (
+                      <button
+                        style={{ marginLeft: '1rem' }}
+                        type="button"
+                        onClick={() => navigate('/register')}
+                      >
+                        Registrate aquí
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 {/* Botones de carga o envío */}
                 {

@@ -32,7 +32,7 @@ const Chat = () => {
 
   return (
     <div className="chat-wrapper">
-      <h1 className="chat-header">Mensajes:</h1>
+      <h1 className="chat-header"> Mi espacio de trabajo: Mensajes</h1>
 
       <div className="messages-container">
         {
